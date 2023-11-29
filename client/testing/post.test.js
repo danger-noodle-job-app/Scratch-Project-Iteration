@@ -1,28 +1,39 @@
-import React from 'react';
-// import { Provider } from 'react-redux';
-// import userEvent from '@testing-library/user-event'
-import { render, screen, waitFor } from '@testing-library/react';
-// import regeneratorRuntime from 'regenerator-runtime';
-// import { DndProvider } from 'react-dnd';
-// import { HTML5Backend } from 'react-dnd-html5-backend';
+/**
+ * @jest-environment jsdom
+ */
 
-import { Post } from '../components/Post.jsx';
+const { JSDOM }  = require('jsdom');
+const React = require('react');
+const { render, screen, waitFor } = require('@testing-library/react')
+const { TextEncoder } = require('text-encoding-utf-8');
+const Post = require('../components/Post.jsx');
+const { act } = require('react-test-renderer');
 
+// Object.assign(global, { TextDecoder, TextEncoder });
+
+
+const jsdom = new JSDOM('<!doctype html><html><body></body></html>');
+global.document = jsdom.window.document;
+global.window = jsdom.window;
+global.TextEncoder = TextEncoder;
 
 describe('Unit testing Post.jsx React Component', () => {
     describe('Post', () => {
+      let color;
       const props = {
-        status: 'Applied',
-        dateApplied: '2020-01-01',
-        id: 1,
+        stat: 'Applied',
+        dateApplied: new Date(),
         company: 'test Company',
         title: 'Sr. SWE',
-        salary: 500000,
+        salary: '500000',
         link: 'www.google.com',
       };
+
+      beforeAll(() => {
+        act(() => render(<Post stat={props.stat} dateApplied={props.dateApplied} company={props.company} title={props.title} salary={props.salary} link={props.link} />));
+      })
   
       test('Renders correctly with props', () => {
-        render(<Post {...props} />);
   
         // Assert that the rendered component contains relevant information
         expect(screen.getByText('Date Applied: 2020-01-01')).toBeInTheDocument();

@@ -1,5 +1,7 @@
 import React from 'react';
+// const React = require('react');
 import { useDrag } from 'react-dnd';
+// const { useDrag } = require('react-dnd');
 
 const Post = ({ id, dateApplied, company, title, salary, status, link }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
