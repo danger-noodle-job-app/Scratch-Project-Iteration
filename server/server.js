@@ -26,6 +26,10 @@ app.patch('/:id', jobController.updateStatus, (req, res) => {
   return res.status(200).redirect('/');
 });
 
+app.patch('/edit/:id', jobController.editPost, (req, res) => {
+  return res.status(200).redirect('/');
+});
+
 //Deleting job in database
 app.delete('/:id', jobController.deleteStatus, (req, res) => {
   return res.status(200).redirect('/');

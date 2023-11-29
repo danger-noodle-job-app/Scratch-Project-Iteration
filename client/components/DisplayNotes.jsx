@@ -43,6 +43,7 @@ const DisplayNotes = ({ status }) => {
         salary={ele.salary}
         status={ele.status}
         link={ele.link}
+        comments={ele.comments}
       />
     );
   });

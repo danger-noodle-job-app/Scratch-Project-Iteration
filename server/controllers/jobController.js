@@ -4,7 +4,7 @@ const jobController = {
   //create job app.
   async createJob(req, res, next) {
     try {
-      const { dateApplied, company, title, salary, status, link } = req.body;
+      const { dateApplied, company, title, salary, status, link, comments } = req.body;
       if (
         dateApplied.length &&
         company.length &&
@@ -18,6 +18,7 @@ const jobController = {
           salary,
           status,
           link,
+          comments,
         });
         return next();
       } else {
@@ -107,6 +108,31 @@ const jobController = {
       return next({
         log: `Error in the jobController.syncData: ${error}`,
         message: { err: 'Error occured in syncing' },
+        status: 500,
+      });
+    }
+  },
+  
+  async editPost(req, res, next) {
+    // Editing the post.
+    try {
+      const jobId = req.params.id;
+      const { dateApplied, company, title, salary, status, link, comments } = req.body;
+
+      if (status.length) {
+        const updatedJob = await Job.updateOne({ _id: jobId }, { dateApplied, company, title, salary, status, link, comments });
+        return next();
+      } else {
+        return next({
+          log: 'Error in the jobController.updateStatus',
+          message: { err: 'Error occured in updating status' },
+          status: 400,
+        });
+      }
+    } catch (error) {
+      return next({
+        log: `Error in the jobController.updateStatus: ${error}`,
+        message: { err: 'Error occured in updating status' },
         status: 500,
       });
     }
