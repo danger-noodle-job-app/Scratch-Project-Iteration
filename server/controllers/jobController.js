@@ -124,15 +124,15 @@ const jobController = {
         return next();
       } else {
         return next({
-          log: 'Error in the jobController.updateStatus',
-          message: { err: 'Error occured in updating status' },
+          log: 'Error in the jobController.editPost',
+          message: { err: 'Error occured in editing the post' },
           status: 400,
         });
       }
     } catch (error) {
       return next({
-        log: `Error in the jobController.updateStatus: ${error}`,
-        message: { err: 'Error occured in updating status' },
+        log: `Error in the jobController.editPost: ${error}`,
+        message: { err: 'Error occured in editing post' },
         status: 500,
       });
     }

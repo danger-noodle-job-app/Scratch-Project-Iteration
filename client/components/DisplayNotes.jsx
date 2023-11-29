@@ -33,6 +33,7 @@ const DisplayNotes = ({ status }) => {
 
   const postArray = [];
   data.forEach((ele) => {
+    if (ele.dateApplied === null) ele.dateApplied = '2023-10-31';
     postArray.push(
       <Post
         key={ele._id}

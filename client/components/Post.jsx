@@ -46,7 +46,7 @@ const Post = ({ id, dateApplied, company, title, salary, status, link, comments 
       <EditPopUpForm
         key={id}
         id={id}
-        dateApply={dateApplied}
+        dateApplied={dateApplied}
         company={company}
         title={title}
         salary={salary}
@@ -54,9 +54,6 @@ const Post = ({ id, dateApplied, company, title, salary, status, link, comments 
         link={link}
         comments={comments}
       />
-      <button className='postButton' onClick={handleClick}>
-        Edit This Post
-      </button>
       <button className='postButton' onClick={handleClick}>
         X
       </button>

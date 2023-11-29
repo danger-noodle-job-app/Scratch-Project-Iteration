@@ -33,7 +33,10 @@ const EditPopUpForm = ({ id, dateApplied, company, title, salary, status, link, 
         body: JSON.stringify(formObj),
         headers: { 'Content-Type': 'application/json' },
       })
-        .then((response) => response.json())
+        .then((response) => {
+            console.log('====================', response) 
+            response.json()
+        })
         .then((data) => {
             console.log('patch successful! Heres your data!')
           console.log(data);
@@ -71,12 +74,12 @@ const EditPopUpForm = ({ id, dateApplied, company, title, salary, status, link, 
                 {
                   /* setCompany, etc? */
                 }
-                setCompany('');
-                setJobTitle('');
-                setSalary('');
-                setStatus('');
-                setLink('');
-                setComments('')
+                setCompany(companyEdit);
+                setJobTitle(jobTitle);
+                setSalary(salaryEdit);
+                setStatus(statusEdit);
+                setLink(linkEdit);
+                setComments(commentsEdit)
                 {
                   /*props.newPost(company, jobTitle, etc*/
                 }
