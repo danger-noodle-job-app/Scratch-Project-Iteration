@@ -30,6 +30,7 @@ const HeaderContainer = () => {
 
   return (
     <div className='headerContainer'>
+      <a href='/auth/google'>Login In</a>
       <button className='btn-toggle' onClick={darkModeButtonClick}>
         Dark-Mode
       </button>
