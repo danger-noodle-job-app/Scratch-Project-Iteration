@@ -52,7 +52,7 @@ const EditPopUpForm = ({ id, dateApplied, company, title, salary, status, link, 
     return (
       <>
         {/* can replace below with our own button element  */}
-        <Button variant='primary' className='formButton' onClick={handleShow}>
+        <Button variant='primary' className='editFormButton' onClick={handleShow}>
           Edit
         </Button>
   
