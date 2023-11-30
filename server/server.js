@@ -1,13 +1,11 @@
 const path = require('path');
 const express = require('express');
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
 require('dotenv').config();
-const { User } = require('./models/jobModel');
+require('./googleAuth');
 
-const clientSecret = process.env.clientSecret;
-const clientID = process.env.clientID;
+const mySecret = process.env.mySecret;
 
 const jobController = require('./controllers/jobController');
 const userController = require('./controllers/userController');
@@ -20,55 +18,40 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, '../build')));
 
 /***********************Google Oauth******************************/
-app.use(session({ secret: clientSecret, resave: true, saveUninitialized: true }));
+app.use(session({
+  secret: mySecret,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Passport configuration
-passport.use(new GoogleStrategy({
-  clientID,
-  clientSecret,
-  callbackURL: 'http://localhost:8081/auth/google/callback', 
-},
-async (accessToken, refreshToken, profile, done) => {
-  // Save or retrieve user from your database
-  const user = {
-    googleId: profile.id,
-    email: profile.email,
-    name: profile.displayName
-  }
+// Google authentication routes
+app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
-  const loginUser = await User.findOne({googleId: profile.id});
-  if(loginUser){
-    // user exists
-  } else{
-    //user doesn't exist
-  }
-  // In this example, we're just saving the user ID in the session
-  return done(null, profile.id);
+app.get('/auth/google/callback',
+  passport.authenticate('google', { 
+    successRedirect: '/successLogin',
+    failureRedirect: '/failLogin'
 }));
 
-// Serialize and deserialize user to/from session
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((obj, done) => done(null, obj));
+app.get('/successLogin', (req, res) => {
+  return res.status(200).send('Login Successful!');
+})
 
-// Middleware to check if the user is authenticated
-const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect('/auth/google'); // Redirect to Google authentication if not authenticated
-};
+app.get('/failLogin', (req, res) => {
+  return res.status(200).send('Failed to login');
+})
 
-// Google authentication routes
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
-app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
-  (req, res) => res.redirect('/'));
-
-app.get('/currentUser', userController.ensureAuthenticated(), (req, res) => {
-  return res.status(200).json(res.locals.googleId);
-});
+// IMPLEMENT SIGN OUT BUTTON OR MANUALLY GO TO THIS URL
+app.get('/logout', (req, res) => {
+  // req.logout();
+  req.session.destroy();
+  return res.status(200).redirect('/');
+  // return res.status(200).send('Successfully logged out');
+})
 /***********************End of Google Oauth***********************/
 
 //Sync data to redux store
@@ -96,6 +79,7 @@ app.delete('/:id', jobController.deleteStatus, (req, res) => {
 });
 
 app.get('*', (req, res) =>
+  // let userName = req.user.displayName();
   res.sendFile(path.resolve(__dirname, '../build/index.html'))
 );
 
@@ -106,7 +90,7 @@ app.use((err, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 500,
-    message: { err: 'An error occurred' },
+    message: { err: 'An error occurred', err },
   };
   const errorObj = Object.assign({}, defaultErr, err);
   console.log(errorObj.log);
