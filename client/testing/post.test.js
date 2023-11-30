@@ -24,13 +24,13 @@ describe('Unit testing Post.jsx React Component', () => {
         stat: 'Applied',
         dateApplied: new Date(),
         company: 'test Company',
-        title: 'Sr. SWE',
+        title: 'Sr SWE',
         salary: '500000',
         link: 'www.google.com',
       };
 
       beforeAll(() => {
-        act(() => render(<Post stat={props.stat} dateApplied={props.dateApplied} company={props.company} title={props.title} salary={props.salary} link={props.link} />));
+       render(<Post stat={props.stat} dateApplied={props.dateApplied} company={props.company} title={props.title} salary={props.salary} link={props.link} />);
       })
   
       test('Renders correctly with props', () => {

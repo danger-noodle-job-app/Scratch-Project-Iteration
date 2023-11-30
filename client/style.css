@@ -1,3 +1,9 @@
+
+body {
+  color: #222;
+  background: #fff;
+}
+
 /* Header Bar */
 .headerContainer {
   display: flex;
