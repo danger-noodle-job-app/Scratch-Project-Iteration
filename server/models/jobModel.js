@@ -29,6 +29,7 @@ const Job = mongoose.model('job', jobSchema);
 const userSchema = new Schema({
   googleId: String,
   email: String,
+  picture: String,
   name: String
 });
 

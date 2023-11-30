@@ -38,7 +38,8 @@ app.get('/auth/google/callback',
 }));
 
 app.get('/successLogin', (req, res) => {
-  return res.status(200).send('Login Successful!');
+  // return res.status(200).send('Login Successful!');
+  return res.status(200).redirect('/');
 })
 
 app.get('/failLogin', (req, res) => {

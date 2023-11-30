@@ -10,11 +10,12 @@ const clientID = process.env.clientID;
 passport.use(new GoogleStrategy({
     clientID: clientID,
     clientSecret: clientSecret,
-    callbackURL: 'http://localhost:3000/auth/google/callback', 
-    passReqToCallback: true,
+    callbackURL: 'http://localhost:8081/auth/google/callback', 
+    // passReqToCallback: true,
   },
-  (req, accessToken, refreshToken, profile, done) => {
+  (accessToken, refreshToken, profile, done) => {
     // Save or retrieve user from your database
+    
     const user = {
       googleId: profile.id,
       email: profile.email,
@@ -22,29 +23,33 @@ passport.use(new GoogleStrategy({
       picture: profile.picture
     }
 
-    User.findOne({ googleId: profile.id }, (err, existingUser) => {
-      if (err) {
-        return done(err);
-      }
-      if (existingUser) {
-        return done(null, existingUser);
-      }
+    console.log('profile id: ' + profile.id);
+    console.log('profile pic: ' + profile.picture);
+
+    // THIS IS GIVING ERROR AFTER PRESSING LOGIN TWICE
+    // User.findOne({ googleId: profile.id }, (err, existingUser) => {
+    //   if (err) {
+    //     return done(err);
+    //   }
+    //   if (existingUser) {
+    //     return done(null, existingUser);
+    //   }
     
-      // 
-      const newUser = new User({
-        googleId: profile.id,
-        email: profile.email,
-        name: profile.displayName,
-      });
+    //   // User.create()....
+    //   const newUser = new User({
+    //     googleId: profile.id,
+    //     email: profile.email,
+    //     name: profile.displayName,
+    //   });
     
-      newUser.save((saveErr) => {
-        if (saveErr) {
-          return done(saveErr);
-        }
-        return done(null, newUser);
-      });
-    });
-    // In this example, we're just saving the user ID in the session
+    //   newUser.save((saveErr) => {
+    //     if (saveErr) {
+    //       return done(saveErr);
+    //     }
+    //     return done(null, newUser);
+    //   });
+    // });
+    
     return done(null, profile.id);
 }));
 

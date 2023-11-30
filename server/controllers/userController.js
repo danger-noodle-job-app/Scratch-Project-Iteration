@@ -8,7 +8,11 @@ const userController = {
 
   saveUser(req, res, next){
     return next();
-  }
+  },
+
+  // async logOut(req, res, next){
+
+  // },
 }
 
 
