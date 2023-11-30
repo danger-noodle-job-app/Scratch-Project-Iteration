@@ -66,7 +66,7 @@ app.get('/logout', (req, res) => {
 app;
 
 //Check the DB for darkmode bool, tur or false
-app.get('/data/darkmode', jobController.darkModeCheck, (req, res) => {
+app.get('/data/darkmode', jobController.getGoogleId, jobController.darkModeCheck, (req, res) => {
   return res.status(200).json(res.locals.darkMode);
 });
 
@@ -74,7 +74,7 @@ return res.status(200).json(res.locals.syncData);
 //;
 
 //Creating job in database
-app.post('/', jobController.createJob, (req, res) => {
+app.post('/', jobController.getGoogleId, jobController.createJob, (req, res) => {
   return res.status(200).redirect('/');
 });
 

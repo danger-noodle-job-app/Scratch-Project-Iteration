@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const clientSecret = process.env.clientSecret;
 const clientID = process.env.clientID;
+let user;
 
 // Passport configuration
 passport.use(new GoogleStrategy({
@@ -15,13 +16,12 @@ passport.use(new GoogleStrategy({
   },
   (accessToken, refreshToken, profile, done) => {
     // Save or retrieve user from your database
-    
-    const user = {
+    user = {
       googleId: profile.id,
       email: profile.email,
       name: profile.displayName,
       picture: profile.picture
-    }
+    };
 
     console.log('profile id: ' + profile.id);
     console.log('profile pic: ' + profile.picture);
@@ -57,17 +57,8 @@ passport.use(new GoogleStrategy({
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((obj, done) => done(null, obj));
 
+const getUser = () => {
+  return user.googleId;
+};
 
-// var GoogleStrategy = require('passport-google-oauth20').Strategy;
-
-// passport.use(new GoogleStrategy({
-//     clientID: GOOGLE_CLIENT_ID,
-//     clientSecret: GOOGLE_CLIENT_SECRET,
-//     callbackURL: "http://www.example.com/auth/google/callback"
-//   },
-//   function(accessToken, refreshToken, profile, cb) {
-//     User.findOrCreate({ googleId: profile.id }, function (err, user) {
-//       return cb(err, user);
-//     });
-//   }
-// ));
+module.exports = { getUser };

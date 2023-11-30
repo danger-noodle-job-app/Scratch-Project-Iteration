@@ -21,16 +21,19 @@ const jobSchema = new Schema({
   status: { type: String, required: true },
   link: String,
   comments: String,
-  googleId: { type: String, required: true }
+  googleId: String
 });
 
 const Job = mongoose.model('job', jobSchema);
 
+
+// Not used yet
 const userSchema = new Schema({
   googleId: String,
   email: String,
   picture: String,
-  name: String
+  name: String,
+  posts: Array
 });
 
 const User = mongoose.model('user', userSchema);
