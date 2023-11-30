@@ -33,6 +33,7 @@ const DisplayNotes = ({ status }) => {
 
   const postArray = [];
   data.forEach((ele) => {
+    if (ele.dateApplied === null) ele.dateApplied = '2023-10-31';
     postArray.push(
       <Post
         key={ele._id}
@@ -43,6 +44,7 @@ const DisplayNotes = ({ status }) => {
         salary={ele.salary}
         status={ele.status}
         link={ele.link}
+        comments={ele.comments}
       />
     );
   });
