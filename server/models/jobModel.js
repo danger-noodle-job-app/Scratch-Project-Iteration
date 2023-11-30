@@ -20,7 +20,7 @@ const jobSchema = new Schema({
   salary: String,
   status: { type: String, required: true },
   link: String,
-  comments: String
+  comments: String,
 });
 
 const Job = mongoose.model('job', jobSchema);
