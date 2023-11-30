@@ -37,10 +37,25 @@ body.dark-theme .headerContainer {
   margin: 5px;
 }
 
+body.dark-theme .formButton {
+  height: 45px;
+  width: 45px;
+  border-radius: 30px;
+  margin: 5px;
+  background-color: black;
+}
+
 .formInput {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+body.dark-theme .formInput {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: black;
 }
 
 .formInput input {
