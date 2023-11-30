@@ -1,4 +1,24 @@
+body {
+  color: #222;
+  background: #fff;
+}
+
 /* Header Bar */
+body.dark-theme body {
+  background-color: gray;
+}
+
+.btn-toggle {
+  background-color: white;
+  border: 1pt solid black;
+}
+
+body.dark-theme .btn-toggle {
+  background-color: black;
+  border: 1pt solid white;
+  color: white;
+}
+
 .headerContainer {
   display: flex;
   border: 1px solid black;
@@ -6,7 +26,15 @@
   padding: 10px;
   justify-content: space-between;
 }
-
+body.dark-theme .headerContainer {
+  display: flex;
+  border: 1px solid rgb(179, 110, 243);
+  background-color: black;
+  color: white;
+  margin: 15px;
+  padding: 10px;
+  justify-content: space-between;
+}
 .formButton {
   height: 45px;
   width: 45px;
@@ -14,10 +42,33 @@
   margin: 5px;
 }
 
+.editFormButton {
+  height: 25px;
+  width: 60px;
+  border-radius: 15px;
+  font-size: 8px;
+  margin: 3px;
+}
+
+body.dark-theme .formButton {
+  height: 45px;
+  width: 45px;
+  border-radius: 30px;
+  margin: 5px;
+  background-color: black;
+}
+
 .formInput {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+body.dark-theme .formInput {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: black;
 }
 
 .formInput input {
@@ -31,6 +82,13 @@
   margin: 15px;
 }
 
+body.dark-theme .jobContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin: 15px;
+  border: 2px solid rgb(120, 110, 243);
+}
+
 /* Column Container */
 .statusColumn {
   display: flex;
@@ -40,8 +98,27 @@
   padding: 5px;
 }
 
+body.dark-theme .statusColumn {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid white;
+  background-color: black;
+  color: white;
+  height: 91vh;
+  padding: 5px;
+}
+
 #status {
   border-bottom: 1px solid black;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+body.dark-theme #status {
+  border-bottom: 1px solid white;
   width: 100%;
   text-align: center;
   padding: 10px;
@@ -82,4 +159,20 @@
 .postBox p {
   margin: 0px;
   font-size: x-small;
+}
+
+body.dark-theme .modal {
+  color: white;
+}
+
+body.dark-theme .modal-body {
+  background-color: #121212;
+}
+
+body.dark-theme .modal-header {
+  background-color: #121212;
+}
+
+body.dark-theme .modal-footer {
+  background-color: #121212;
 }
