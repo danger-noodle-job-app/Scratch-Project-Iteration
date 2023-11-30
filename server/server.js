@@ -18,33 +18,40 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, '../build')));
 
 /***********************Google Oauth******************************/
-app.use(session({
-  secret: mySecret,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}));
+app.use(
+  session({
+    secret: mySecret,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Google authentication routes
-app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
+app.get(
+  '/auth/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+);
 
-app.get('/auth/google/callback',
-  passport.authenticate('google', { 
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', {
     successRedirect: '/successLogin',
-    failureRedirect: '/failLogin'
-}));
+    failureRedirect: '/failLogin',
+  })
+);
 
 app.get('/successLogin', (req, res) => {
   // return res.status(200).send('Login Successful!');
   return res.status(200).redirect('/');
-})
+});
 
 app.get('/failLogin', (req, res) => {
   return res.status(200).send('Failed to login');
-})
+});
 
 // IMPLEMENT SIGN OUT BUTTON OR MANUALLY GO TO THIS URL
 app.get('/logout', (req, res) => {
@@ -52,13 +59,19 @@ app.get('/logout', (req, res) => {
   req.session.destroy();
   return res.status(200).redirect('/');
   // return res.status(200).send('Successfully logged out');
-})
+});
 /***********************End of Google Oauth***********************/
 
 //Sync data to redux store
-app.get('/data', jobController.syncData, (req, res) => {
-  return res.status(200).json(res.locals.syncData);
+app;
+
+//Check the DB for darkmode bool, tur or false
+app.get('/data/darkmode', jobController.darkModeCheck, (req, res) => {
+  return res.status(200).json(res.locals.darkMode);
 });
+
+return res.status(200).json(res.locals.syncData);
+//;
 
 //Creating job in database
 app.post('/', jobController.createJob, (req, res) => {

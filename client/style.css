@@ -25,6 +25,7 @@ body.dark-theme .btn-toggle {
   margin: 15px;
   padding: 10px;
   justify-content: space-between;
+  align-items: center;
 }
 body.dark-theme .headerContainer {
   display: flex;

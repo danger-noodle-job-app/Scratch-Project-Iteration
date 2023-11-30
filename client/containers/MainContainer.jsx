@@ -24,6 +24,7 @@ const MainContainer = () => {
       .then((data) => {
         console.log(data);
         darkModeBool = data.darkMode;
+        setDarkMode(darkModeBool);
       })
       .catch((err) => {
         console.log(err);

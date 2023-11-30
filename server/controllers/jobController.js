@@ -143,6 +143,21 @@ const jobController = {
       });
     }
   },
+
+  async darkModeCheck(req, res, next) {
+    try {
+      const darkModeBool = await DBDarkmode.find();
+      console.log('serverside darkmodebool', darkModeBool);
+      res.locals.darkMode = darkModeBool;
+      return next();
+    } catch (error) {
+      return next({
+        log: `Error in the jobController.darkModeCheck: ${error}`,
+        message: { err: 'Error occured checking DarkMode DB' },
+        status: 500,
+      });
+    }
+  },
 };
 
 module.exports = jobController;
