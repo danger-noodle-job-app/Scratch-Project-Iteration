@@ -58,7 +58,7 @@ body.dark-theme .jobContainer {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   margin: 15px;
-  border: 2px solid rgb(179, 110, 243);
+  border: 2px solid rgb(120, 110, 243);
 }
 
 /* Column Container */
