@@ -6,7 +6,7 @@ import Post from './Post.jsx';
 const DisplayNotes = ({ status }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'post',
-    drop: (item) => changeStatus(item.id),
+    drop: (item) => changeStatus(item.id), // save the item.id to a variable
     collect: (montior) => ({
       isOver: !!montior.isOver(),
     }),

@@ -5,6 +5,7 @@ const jobController = {
   async createJob(req, res, next) {
     try {
       const { dateApplied, company, title, salary, status, link, comments } = req.body;
+      const { dateApplied, company, title, salary, status, link, comments } = req.body;
       if (
         dateApplied.length &&
         company.length &&
