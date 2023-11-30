@@ -4,11 +4,13 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
 require('dotenv').config();
+const { User } = require('./models/jobModel');
 
 const clientSecret = process.env.clientSecret;
 const clientID = process.env.clientID;
 
 const jobController = require('./controllers/jobController');
+const userController = require('./controllers/userController');
 
 const app = express();
 const PORT = 3000;
@@ -18,39 +20,55 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, '../build')));
 
 /***********************Google Oauth******************************/
-// app.use(require('express-session')({ secret: 'your-secret-key', resave: true, saveUninitialized: true }));
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(session({ secret: clientSecret, resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// // Passport configuration
-// passport.use(new GoogleStrategy({
-//   clientID,
-//   clientSecret,
-//   callbackURL: 'http://localhost:3000/auth/google/callback', // You need to set up this callback URL in your Google Developer Console
-// },
-// (accessToken, refreshToken, profile, done) => {
-//   // Save or retrieve user from your database
-//   // In this example, we're just saving the user ID in the session
-//   return done(null, profile.id);
-// }));
+// Passport configuration
+passport.use(new GoogleStrategy({
+  clientID,
+  clientSecret,
+  callbackURL: 'http://localhost:8081/auth/google/callback', 
+},
+async (accessToken, refreshToken, profile, done) => {
+  // Save or retrieve user from your database
+  const user = {
+    googleId: profile.id,
+    email: profile.email,
+    name: profile.displayName
+  }
 
-// // Serialize and deserialize user to/from session
-// passport.serializeUser((user, done) => done(null, user));
-// passport.deserializeUser((obj, done) => done(null, obj));
+  const loginUser = await User.findOne({googleId: profile.id});
+  if(loginUser){
+    // user exists
+  } else{
+    //user doesn't exist
+  }
+  // In this example, we're just saving the user ID in the session
+  return done(null, profile.id);
+}));
 
-// // Middleware to check if the user is authenticated
-// const ensureAuthenticated = (req, res, next) => {
-//   if (req.isAuthenticated()) {
-//     return next();
-//   }
-//   res.redirect('/auth/google'); // Redirect to Google authentication if not authenticated
-// };
+// Serialize and deserialize user to/from session
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((obj, done) => done(null, obj));
 
-// // Google authentication routes
-// app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
-// app.get('/auth/google/callback',
-//   passport.authenticate('google', { failureRedirect: '/' }),
-//   (req, res) => res.redirect('/'));
+// Middleware to check if the user is authenticated
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/auth/google'); // Redirect to Google authentication if not authenticated
+};
+
+// Google authentication routes
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => res.redirect('/'));
+
+app.get('/currentUser', userController.ensureAuthenticated(), (req, res) => {
+  return res.status(200).json(res.locals.googleId);
+});
 /***********************End of Google Oauth***********************/
 
 //Sync data to redux store
