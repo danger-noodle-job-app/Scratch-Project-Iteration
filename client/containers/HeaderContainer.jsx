@@ -13,15 +13,24 @@ const HeaderContainer = () => {
   // }
   const [darkMode, setDarkMode] = useState('false');
 
+  const darkModeButtonClick = () => {
+    console.log('we are inside Dark mode button!');
+    console.log('this is darkMode state:', darkMode);
+
+    if (darkMode === 'false') {
+      document.body.classList.toggle('dark-theme');
+      document.body.style.backgroundColor = 'rgb(100, 110, 290)';
+      setDarkMode('true');
+    } else {
+      document.body.classList.toggle('dark-theme');
+      document.body.style.backgroundColor = null;
+      setDarkMode('false');
+    }
+  };
+
   return (
     <div className='headerContainer'>
-      <button
-        className='btn-toggle'
-        onClick={() => {
-          if (darkMode === 'false') setDarkMode('true');
-          setDarkMode('false');
-        }}
-      >
+      <button className='btn-toggle' onClick={darkModeButtonClick}>
         Dark-Mode
       </button>
       <h1 id='header'>Job Application Tracker</h1>

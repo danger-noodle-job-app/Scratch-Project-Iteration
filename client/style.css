@@ -160,3 +160,19 @@ body.dark-theme #status {
   margin: 0px;
   font-size: x-small;
 }
+
+body.dark-theme .modal {
+  color: white;
+}
+
+body.dark-theme .modal-body {
+  background-color: #121212;
+}
+
+body.dark-theme .modal-header {
+  background-color: #121212;
+}
+
+body.dark-theme .modal-footer {
+  background-color: #121212;
+}
