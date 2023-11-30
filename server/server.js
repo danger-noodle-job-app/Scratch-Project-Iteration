@@ -56,12 +56,12 @@ app.get('/logout', (req, res) => {
 /***********************End of Google Oauth***********************/
 
 //Sync data to redux store
-app.get('/data', jobController.syncData, (req, res) => {
+app.get('/data', jobController.getGoogleId, jobController.syncData, (req, res) => {
   return res.status(200).json(res.locals.syncData);
 });
 
 //Creating job in database
-app.post('/', jobController.createJob, (req, res) => {
+app.post('/', jobController.getGoogleId, jobController.createJob, (req, res) => {
   return res.status(200).redirect('/');
 });
 
