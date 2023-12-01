@@ -20,8 +20,22 @@ const jobSchema = new Schema({
   salary: String,
   status: { type: String, required: true },
   link: String,
+  comments: String,
+  googleId: String
 });
 
 const Job = mongoose.model('job', jobSchema);
 
-module.exports = { Job };
+
+// Not used yet
+const userSchema = new Schema({
+  googleId: String,
+  email: String,
+  picture: String,
+  name: String,
+  posts: Array
+});
+
+const User = mongoose.model('user', userSchema);
+
+module.exports = { Job, User };

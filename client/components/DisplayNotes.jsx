@@ -6,7 +6,7 @@ import Post from './Post.jsx';
 const DisplayNotes = ({ status }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'post',
-    drop: (item) => changeStatus(item.id),
+    drop: (item) => changeStatus(item.id), // save the item.id to a variable
     collect: (montior) => ({
       isOver: !!montior.isOver(),
     }),
@@ -33,6 +33,8 @@ const DisplayNotes = ({ status }) => {
 
   const postArray = [];
   data.forEach((ele) => {
+    console.log(ele);
+    if (ele.dateApplied === null) ele.dateApplied = '2023-10-31';
     postArray.push(
       <Post
         key={ele._id}

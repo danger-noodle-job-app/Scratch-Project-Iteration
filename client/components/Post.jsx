@@ -1,7 +1,10 @@
 import React from 'react';
+// const React = require('react');
 import { useDrag } from 'react-dnd';
+// const { useDrag } = require('react-dnd');
+import EditPopUpForm from './EditPopUpForm.jsx';
 
-const Post = ({ id, dateApplied, company, title, salary, status, link }) => {
+const Post = ({ id, dateApplied, company, title, salary, status, link, comments }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'post',
     item: { id: id },
@@ -40,6 +43,17 @@ const Post = ({ id, dateApplied, company, title, salary, status, link }) => {
       style={{ backgroundColor: colorArray[status] }}
       ref={drag}
     >
+      <EditPopUpForm
+        key={id}
+        id={id}
+        dateApplied={dateApplied}
+        company={company}
+        title={title}
+        salary={salary}
+        status={status}
+        link={link}
+        comments={comments}
+      />
       <button className='postButton' onClick={handleClick}>
         X
       </button>
@@ -66,6 +80,10 @@ const Post = ({ id, dateApplied, company, title, salary, status, link }) => {
       <p>
         <b>Job Link: </b>
         <a href={`http://${link}`}>Click on Link</a>
+      </p>
+      <p>
+        <b>Comments: </b>
+        {comments}
       </p>
     </div>
   );

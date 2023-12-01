@@ -1,10 +1,14 @@
 const { Job } = require('../models/jobModel');
+const { DBDarkmode } = require('../models/darkModel');
+const getUser = require('../googleAuth')
 
 const jobController = {
   //create job app.
   async createJob(req, res, next) {
     try {
-      const { dateApplied, company, title, salary, status, link } = req.body;
+      const googleId = res.locals.googleId;
+      const { dateApplied, company, title, salary, status, link, comments } =
+        req.body;
       if (
         dateApplied.length &&
         company.length &&
@@ -18,6 +22,8 @@ const jobController = {
           salary,
           status,
           link,
+          comments,
+          googleId,
         });
         return next();
       } else {
@@ -84,19 +90,33 @@ const jobController = {
   },
 
   async syncData(req, res, next) {
+    const googleId = res.locals.googleId;
+    console.log('this is googleID in syncdata', googleId)
+    let allInterested, allApplied, allInterviewed, FollowedUp, allRejected, allAccepted;
     try {
-      const allInterested = await Job.find({ status: 'Interested' });
-      const allApplied = await Job.find({ status: 'Applied' });
-      const allnterviewed = await Job.find({ status: 'Interviewed' });
-      const allFollowedup = await Job.find({ status: 'FollowedUp' });
-      const allRejected = await Job.find({ status: 'Rejected' });
-      const allAccepted = await Job.find({ status: 'Accepted' });
+      if(!googleId){
+         allInterested = await Job.find({ status: 'Interested' });
+         allApplied = await Job.find({ status: 'Applied' });
+         allInterviewed = await Job.find({ status: 'Interviewed' });
+         FollowedUp = await Job.find({ status: 'FollowedUp' });
+         allRejected = await Job.find({ status: 'Rejected' });
+         allAccepted = await Job.find({ status: 'Accepted' });
+      } else {
+         allInterested= await Job.find({ status: 'Interested', googleId: googleId});
+         allApplied = await Job.find({ status: 'Applied', googleId: googleId });
+         allInterviewed = await Job.find({ status: 'Interviewed', googleId: googleId });
+         FollowedUp = await Job.find({ status: 'FollowedUp', googleId: googleId });
+         allRejected = await Job.find({ status: 'Rejected', googleId: googleId });
+         allAccepted = await Job.find({ status: 'Accepted', googleId: googleId });
+
+        console.log('this is fetched allfollowedup', FollowedUp)
+      }
 
       let syncObject = {
         Interested: allInterested,
         Applied: allApplied,
-        Interviewed: allnterviewed,
-        FollowedUp: allFollowedup,
+        Interviewed: allInterviewed,
+        FollowedUp: FollowedUp,
         Accepted: allAccepted,
         Rejected: allRejected,
       };
@@ -110,6 +130,45 @@ const jobController = {
         status: 500,
       });
     }
+  },
+
+  async editPost(req, res, next) {
+    // Editing the post.
+    try {
+      const jobId = req.params.id;
+      const { dateApplied, company, title, salary, status, link, comments } =
+        req.body;
+
+      if (status.length) {
+        const updatedJob = await Job.updateOne(
+          { _id: jobId },
+          { dateApplied, company, title, salary, status, link, comments }
+        );
+        return next();
+      } else {
+        return next({
+          log: 'Error in the jobController.editPost',
+          message: { err: 'Error occured in editing the post' },
+          status: 400,
+        });
+      }
+    } catch (error) {
+      return next({
+        log: `Error in the jobController.editPost: ${error}`,
+        message: { err: 'Error occured in editing post' },
+        status: 500,
+      });
+    }
+  },
+
+  getGoogleId (req, res, next) {
+    // if(getUser()) res.locals.googleId = getUser();
+    // console.log('googleId:', res.locals.googleId)
+    // console.log(getUser());
+
+    // CALLING getUser() gives us the ERROR
+    res.locals.googleId = 1;
+    return next();
   },
 };
 

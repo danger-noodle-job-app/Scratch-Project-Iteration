@@ -15,6 +15,7 @@ const PopupForm = () => {
   const [salary, setSalary] = useState('');
   const [status, setStatus] = useState('');
   const [link, setLink] = useState('');
+  const [comments, setComments] = useState('');
 
   function handleClick() {
     let formObj = {
@@ -24,6 +25,7 @@ const PopupForm = () => {
       salary: salary,
       status: status,
       link: link,
+      comments: comments,
     };
 
     fetch('/', {
@@ -73,6 +75,7 @@ const PopupForm = () => {
               setSalary('');
               setStatus('');
               setLink('');
+              setComments('');
               {
                 /*props.newPost(company, jobTitle, etc*/
               }
@@ -160,6 +163,19 @@ const PopupForm = () => {
                 value={link}
                 onChange={(e) => {
                   setLink(e.target.value);
+                }}
+              />
+            </label>
+            <label>
+              {' '}
+              Comments:
+              <input
+                id='comments'
+                placeholder='Share your thoughts here'
+                type='string'
+                value={comments}
+                onChange={(e) => {
+                  setComments(e.target.value);
                 }}
               />
             </label>
