@@ -1,6 +1,6 @@
 const { Job } = require('../models/jobModel');
 const { DBDarkmode } = require('../models/darkModel');
-const { getUser } = require('../googleAuth')
+const getUser = require('../googleAuth')
 
 const jobController = {
   //create job app.
